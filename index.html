@@ -1,1 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XBC ID</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #000000;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .btn-custom {
+            background-color: #000000;
+            color: white;
+            border: 1px solid white;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+        .btn-custom:hover {
+            background-color: #444444;
+        }
+        .hidden {
+            display: none;
+        }
+        main {
+            padding: 20px;
+        }
+        .section {
+            border: 1px solid #000000;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+        .profile-img, .detail-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .game-item, .friend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            animation: slideIn 0.5s ease-in-out;
+            cursor: pointer;
+        }
+        .game-item img, .friend-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            margin-right: 10px;
+        }
+        .game-item:hover, .friend-item:hover {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 5px;
+        }
+        .online {
+            color: green;
+        }
+        .offline {
+            color: red;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        .progress {
+            height: 20px;
+        }
+        .progress-bar {
+            background-color: #4CAF50;
+        }
+        h2 {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .important {
+            font-weight: bold;
+        }
+        #loginPage {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            text-align: center;
+        }
+        #loginPage h2 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>XBC ID</h1>
+        <div id="authSection">
+            <button id="loginButton" class="btn btn-custom">Login</button>
+        </div>
+    </header>
+    <main>
+        <section id="loginPage" class="hidden">
+            <h2>Please log in to access your profile.</h2>
+            <button id="loginPageButton" class="btn btn-custom">Login</button>
+        </section>
+        <section id="profileSection" class="section hidden">
+            <h2><i class="fas fa-user"></i> PROFILE</h2>
+            <img src="https://via.placeholder.com/150" alt="Profile Image" class="profile-img">
+            <p id="profileName" class="important">PlayerName</p>
+            <p id="profileID">ID: 123456</p>
+        </section>
+        <section id="gamesSection" class="section hidden">
+            <h2><i class="fas fa-gamepad"></i> GAMES</h2>
+            <div id="gameList">
+                <!-- Game items will be dynamically added here -->
+            </div>
+        </section>
+        <section id="friendsSection" class="section hidden">
+            <h2><i class="fas fa-users"></i> FRIENDS</h2>
+            <div id="friendList">
+                <!-- Friend items will be dynamically added here -->
+            </div>
+        </section>
+        <section id="detailSection" class="section hidden">
+            <button id="backButton" class="btn btn-custom hidden"><i class="fas fa-arrow-left"></i> Back</button>
+            <h2><i class="fas fa-info-circle"></i> DETAILS</h2>
+            <div id="detailContent">
+                <!-- Detail content will be dynamically added here -->
+            </div>
+        </section>
+    </main>
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- FontAwesome Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script>
+        const isAuthenticated = false; // Placeholder for authentication status
+        const user = {
+            name: "PlayerName",
+            id: "123456",
+            avatar: "https://via.placeholder.com/150",
+            games: [
+                { name: "Eclipse Roleplay", logo: "https://via.placeholder.com/50", timePlayed: "10 hours", description: "A detailed description of Eclipse Roleplay", level: 5, xp: 200, purchases: true }
+            ],
+            friends: [
+                { name: "Friend1", status: "online", avatar: "https://via.placeholder.com/50", id: "654321", timePlayed: "5 hours" },
+                { name: "Friend2", status: "offline", avatar: "https://via.placeholder.com/50", id: "789012", timePlayed: "3 hours" }
+            ]
+        };
 
+        document.getElementById('loginButton').addEventListener('click', function() {
+            authenticateUser();
+        });
+
+        document.getElementById('loginPageButton').addEventListener('click', function() {
+            authenticateUser();
+        });
+
+        function authenticateUser() {
+            showProfile(user);
+        }
+
+        function showProfile(user) {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('loginButton').classList.add('hidden');
+            document.getElementById('profileSection').classList.remove('hidden');
+            document.getElementById('gamesSection').classList.remove('hidden');
+            document.getElementById('friendsSection').classList.remove('hidden');
+            document.getElementById('backButton').classList.add('hidden');
+
+            document.getElementById('authSection').innerHTML = `
+                <span>${user.name}</span>
+                <img src="${user.avatar}" alt="Profile Image" class="profile-img" style="width: 40px; height: 40px; margin-left: 10px;">
+            `;
+
+            document.getElementById('profileName').innerText = user.name;
+            document.getElementById('profileID').innerText = `ID: ${user.id}`;
+
+            const gameList = document.getElementById('gameList');
+            gameList.innerHTML = '';
+            user.games.forEach(game => {
+                gameList.innerHTML += `
+                    <div class="game-item" onclick="showGameDetails('${game.name}')">
+                        <img src="${game.logo}" alt="${game.name}">
+                        <div>
+                            <p class="important">${game.name}</p>
+                            <p><i class="fas fa-clock"></i> Time played: ${game.timePlayed}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const friendList = document.getElementById('friendList');
+            friendList.innerHTML = '';
+            user.friends.forEach(friend => {
+                friendList.innerHTML += `
+                    <div class="friend-item" onclick="showFriendDetails('${friend.name}')">
+                        <img src="${friend.avatar}" alt="${friend.name}">
+                        <div>
+                            <p class="important">${friend.name} <i class="fas fa-circle ${friend.status}"></i></p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function showGameDetails(gameName) {
+            document.getElementById('gamesSection').classList.add('hidden');
+            document.getElementById('friendsSection').classList.add('hidden');
+            document.getElementById('detailSection').classList.remove('hidden');
+            document.getElementById('backButton').classList.remove('hidden');
+
+            const game = user.games.find(g => g.name === gameName);
+            document.getElementById('detailContent').innerHTML = `
+                <img src="${game.logo}" alt="${game.name}" class="detail-img">
+                <p class="important">${game.name}</p>
+                <p>Description: ${game.description}</p>
+                <p><i class="fas fa-clock"></i> Time played: ${game.timePlayed}</p>
+                <p><i class="fas fa-level-up-alt"></i> Level: ${game.level}</p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: ${game.xp}%;">${game.xp} XP</div>
+                </div>
+                <p><i class="fas fa-shopping-cart"></i> Purchases: ${game.purchases ? 'Yes' : 'No'}</p>
+            `;
+        }
+
+        function showFriendDetails(friendName) {
+            document.getElementById('gamesSection').classList.add('hidden');
+            document.getElementById('friendsSection').classList.add('hidden');
+            document.getElementById('detailSection').classList.remove('hidden');
+            document.getElementById('backButton').classList.remove('hidden');
+
+            const friend = user.friends.find(f => f.name === friendName);
+            document.getElementById('detailContent').innerHTML = `
+                <img src="${friend.avatar}" alt="${friend.name}" class="detail-img">
+                <p class="important">${friend.name}</p>
+                <p>ID: ${friend.id}</p>
+                <p><i class="fas fa-clock"></i> Time played: ${friend.timePlayed}</p>
+                <p>Status: <i class="fas fa-circle ${friend.status}"></i> ${friend.status}</p>
+            `;
+        }
+
+        document.getElementById('backButton').addEventListener('click', function() {
+            document.getElementById('detailSection').classList.add('hidden');
+            document.getElementById('backButton').classList.add('hidden');
+            document.getElementById('gamesSection').classList.remove('hidden');
+            document.getElementById('friendsSection').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
